@@ -227,6 +227,18 @@ namespace CalDavSynchronizer.Implementation
       target.Organizer = targetOrganizer;
     }
 
+    private void MapOrganizer2To1 (IEvent source, AppointmentItem target)
+    {
+      if (source.Organizer != null)
+      {
+        target.MeetingStatus = OlMeetingStatus.olMeetingReceived;
+        target.PropertyAccessor.SetProperty ("http://schemas.microsoft.com/mapi/proptag/0x0042001F", source.Organizer.Value.ToString ().Substring (s_mailtoSchemaLength));
+      }
+      else
+      {
+        target.MeetingStatus = OlMeetingStatus.olNonMeeting;
+      }
+    }
 
     private string GetMailUrl (AddressEntry addressEntry)
     {
@@ -685,6 +697,7 @@ namespace CalDavSynchronizer.Implementation
 
       targetWrapper.Inner.Importance = MapPriority2To1 (source.Priority);
 
+      MapOrganizer2To1 (source, target);
       MapAttendees2To1 (source, targetWrapper.Inner);
       if (source.Organizer != null)
       {
@@ -717,6 +730,7 @@ namespace CalDavSynchronizer.Implementation
       target.Categories = string.Join (CultureInfo.CurrentCulture.TextInfo.ListSeparator, source.Categories);
     }
 
+    
 
     private void MapAttendees2To1 (IEvent source, AppointmentItem target)
     {
