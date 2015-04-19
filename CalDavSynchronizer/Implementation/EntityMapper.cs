@@ -196,6 +196,7 @@ namespace CalDavSynchronizer.Implementation
       throw new NotImplementedException (string.Format ("Mapping for value '{0}' not implemented.", value));
     }
 
+
     private OlSensitivity MapPrivacy2To1 (string value)
     {
       switch (value)
@@ -229,6 +230,28 @@ namespace CalDavSynchronizer.Implementation
       }
       throw new NotImplementedException (string.Format ("Mapping for value '{0}' not implemented.", value));
     }
+
+
+    private OlResponseStatus MapParticipation2To1 (string value)
+    {
+      switch (value)
+      {
+        case "NEEDS-ACTION":
+          return OlResponseStatus.olResponseNotResponded;
+        case "ACCEPTED":
+          return OlResponseStatus.olResponseAccepted;
+        case "DECLINED":
+          return OlResponseStatus.olResponseDeclined;
+        case "TENTATIVE":
+          return OlResponseStatus.olResponseTentative;
+        case "DELEGATED":
+          return OlResponseStatus.olResponseNotResponded;
+        case null:
+          return OlResponseStatus.olResponseNone;
+      }
+      throw new NotImplementedException (string.Format ("Mapping for value '{0}' not implemented.", value));
+    }
+
 
     private void MapOrganizer1To2 (AppointmentItem source, IEvent target)
     {
@@ -420,7 +443,7 @@ namespace CalDavSynchronizer.Implementation
         if (sourceRecurrencePattern.Count >= 0)
           targetRecurrencePattern.Occurrences = sourceRecurrencePattern.Count;
 
-        if (sourceRecurrencePattern.Until != default(DateTime))
+        if (sourceRecurrencePattern.Until != default (DateTime))
           targetRecurrencePattern.PatternEndDate = sourceRecurrencePattern.Until;
 
         switch (sourceRecurrencePattern.Frequency)
@@ -764,6 +787,9 @@ namespace CalDavSynchronizer.Implementation
         {
           targetRecipientsWhichShouldRemain.Add (targetRecipient);
           targetRecipient.Type = (int) MapAttendeeType2To1 (attendee.Role);
+
+          var meetingResponseStatus = MapParticipation2To1 (attendee.ParticipationStatus);
+          targetRecipient.PropertyAccessor.SetProperty ("http://schemas.microsoft.com/mapi/proptag/0x5FFF0003", meetingResponseStatus);
         }
       }
 
@@ -784,7 +810,7 @@ namespace CalDavSynchronizer.Implementation
 
       foreach (Recipient recipient in appointment.Recipients)
       {
-        if (! string.IsNullOrEmpty (recipient.Address))
+        if (!string.IsNullOrEmpty (recipient.Address))
           indexByEmailAddresses[GetMailUrl (recipient.AddressEntry)] = recipient;
         else
           indexByEmailAddresses[recipient.Name] = recipient;
