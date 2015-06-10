@@ -33,5 +33,6 @@ namespace CalDavSynchronizer.DataAccess
     EntityIdWithVersion<Uri, string> CreateEvent (string iCalData);
     bool DeleteEvent (Uri uri);
     EntityIdWithVersion<Uri, string> UpdateEvent (Uri url, string iCalData);
+    EntityIdWithVersion<Uri, string> UpdateEvent (Uri url, string etag, string iCalData);
   }
 }

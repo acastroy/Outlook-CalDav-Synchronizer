@@ -98,7 +98,7 @@ namespace CalDavSynchronizer.Implementation
         appointmentItemWrapper.Dispose();
     }
 
-    public EntityIdWithVersion<string, DateTime> Update (string entityId, AppointmentItemWrapper entityToUpdate, Func<AppointmentItemWrapper, AppointmentItemWrapper> entityModifier)
+    public EntityIdWithVersion<string, DateTime> Update (string entityId,DateTime version, AppointmentItemWrapper entityToUpdate, Func<AppointmentItemWrapper, AppointmentItemWrapper> entityModifier)
     {
       entityToUpdate = entityModifier (entityToUpdate);
       entityToUpdate.Inner.Save();

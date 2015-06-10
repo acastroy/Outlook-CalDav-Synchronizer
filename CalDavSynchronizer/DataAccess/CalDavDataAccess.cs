@@ -214,7 +214,7 @@ namespace CalDavSynchronizer.DataAccess
       return UpdateEvent (url, string.Empty, iCalData);
     }
 
-    private EntityIdWithVersion<Uri, string> UpdateEvent (Uri url, string etag, string iCalData)
+    public EntityIdWithVersion<Uri, string> UpdateEvent (Uri url, string etag, string iCalData)
     {
       var absoluteEventUrl = new Uri (_calendarUrl, url);
 

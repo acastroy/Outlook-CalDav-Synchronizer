@@ -117,7 +117,7 @@ namespace CalDavSynchronizer.Implementation
       }
     }
 
-    public EntityIdWithVersion<Uri, string> Update (Uri entityId, IICalendar entityToUpdate, Func<IICalendar, IICalendar> entityModifier)
+    public EntityIdWithVersion<Uri, string> Update (Uri entityId, string version, IICalendar entityToUpdate, Func<IICalendar, IICalendar> entityModifier)
     {
       using (AutomaticStopwatch.StartDebug (s_logger))
       {
@@ -129,7 +129,7 @@ namespace CalDavSynchronizer.Implementation
           newCalendar.Events[i].Sequence = newSequenceNumber;
         }
 
-        return _calDavDataAccess.UpdateEvent (entityId, SerializeCalEvent (newCalendar));
+        return _calDavDataAccess.UpdateEvent (entityId, version, SerializeCalEvent (newCalendar));
       }
     }
 

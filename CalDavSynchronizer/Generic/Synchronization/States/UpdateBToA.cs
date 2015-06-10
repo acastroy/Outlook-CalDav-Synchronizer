@@ -38,7 +38,7 @@ namespace CalDavSynchronizer.Generic.Synchronization.States
     {
       try
       {
-        var newA = _environment.ARepository.Update (_knownData.AtypeId, _aEntity, a => _environment.Mapper.Map2To1 (_bEntity, a));
+        var newA = _environment.ARepository.Update (_knownData.AtypeId, _knownData.AtypeVersion, _aEntity, a => _environment.Mapper.Map2To1 (_bEntity, a));
         return CreateDoNothing (newA.Id, newA.Version, _knownData.BtypeId, _newBVersion);
       }
       catch (Exception x)

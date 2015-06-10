@@ -13,6 +13,7 @@
 // 
 // You should have received a copy of the GNU Affero General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,7 +53,6 @@ namespace CalDavSynchronizer.UnitTest.Synchronization
 
     public void Cleanup (IReadOnlyDictionary<string, string> entities)
     {
-      
     }
 
     public bool Delete (string entityId)
@@ -61,7 +61,7 @@ namespace CalDavSynchronizer.UnitTest.Synchronization
       return true;
     }
 
-    public EntityIdWithVersion<string, int> Update (string entityId, string entityToUpdate, Func<string, string> entityModifier)
+    public EntityIdWithVersion<string, int> Update (string entityId, int version, string entityToUpdate, Func<string, string> entityModifier)
     {
       var kv = EntityVersionAndContentById[entityId];
       EntityVersionAndContentById.Remove (entityId);
